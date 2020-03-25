@@ -76,9 +76,22 @@ class CommandLineInterface
         prompt("#{artist_name}'s songs", songs)
     end
 
+    def view_all_albums
+      list_of_albums = []
+        info_array = Album.all.each{|album|  list_of_albums << album.title}.sort        
+       prompt("Albums: ", list_of_albums)
+    end
 
+    def view_album_songs(album)
+      album_title = album
+      album_id = Album.find_by(title: album_title).id
+      songs = Song.where(album_id: album_id).map{|song| song.name}
+      puts "**************************"
+      puts "**************************"
+      prompt("#{album_title}'s songs", songs)
+    end
 
-    def view_album_songs
+    def search_for_album(album_name)
         prompt = TTY::Prompt.new
 
         puts "Enter the album's title: "
@@ -96,28 +109,29 @@ class CommandLineInterface
         end
     end
 
-    def artist_by_genre 
+    def artist_by_genre(genre)
         all_genres = Artist.all.map{|artist| artist.genre}.uniq.sort
-        genre_name = prompt("Enter the genre's name: ", all_genres)
+        genre_name = prompt("Choose a genre: ", all_genres)
         artists = Artist.all.where(genre: genre_name)
         puts "**************************"
         puts "For #{genre_name}"
         puts "**************************"
         count = 1
+        Artist.all.select{|artist| artist.genre == genre}
         artists.each do |artist|
             ap "#{count}. #{artist.name}" 
             count += 1
         end
     end
 
-    def make_your_own_playlist
-        puts "Enter your album's name: "
-        album_name = gets.chomp
-        Album.create(name: album_name)
-        puts "Which songs do you want to add to your playlist?"
-        display_all_songs
+    # def make_your_own_playlist
+    #     puts "Enter your album's name: "
+    #     album_name = gets.chomp
+    #     Album.create(name: album_name)
+    #     puts "Which songs do you want to add to your playlist?"
+    #     display_all_songs
 
-    end 
+    # end 
 
     def display_all_songs
         Song.all.each{|song| puts "-#{song.name}"}
@@ -171,7 +185,7 @@ class CommandLineInterface
               when menu_array[1]
                 play(view_artist_songs(view_all_artists))
               when menu_array[2]
-                view_album_songs
+                play(view_album_songs(view_all_albums))
               when menu_array[3]
                 artist_by_genre
               when menu_array[4]
