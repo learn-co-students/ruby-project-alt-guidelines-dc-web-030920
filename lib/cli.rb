@@ -34,7 +34,7 @@ class CommandLineInterface
         puts "3. to view all of an artist's songs"
         puts "4. to view an album, and its songs"
         puts "5. to view all artists in a patricular genre"
-        puts "6. to make your own playlist"
+        # puts "6. to make your own playlist"
         puts "7. to see all songs"
     end
 
@@ -140,12 +140,10 @@ class CommandLineInterface
             view_album_songs
         elsif choice == 5
             artist_by_genre
-        elsif choice == 6
-            make_your_own_playlist
+        # elsif choice == 6
+        #     make_your_own_playlist
         elsif choice == 7
             display_all_songs
-        else
-            
         end
     
         # prompt = TTY::Prompt.new
