@@ -28,14 +28,11 @@ class CommandLineInterface
     end
     
     def display_menu
-        puts "Please enter a valid command"
-        puts "1. to play a song by name"
-        puts "2. to view all artists"
-        puts "3. to view all of an artist's songs"
-        puts "4. to view an album, and its songs"
-        puts "5. to view all artists in a patricular genre"
+        menu = ["To play a song by name","To view all artists", "To view all songs by artist", "To view all songs by album", "To view all artists by genre", "To see all songs","To Exit" ]
+        user_choice = prompt("Select a menu item please: ", menu)
+        return user_choice
+        binding.pry
         # puts "6. to make your own playlist"
-        puts "7. to see all songs"
     end
 
     def play # needs validation for when song does't exist in library
@@ -43,7 +40,6 @@ class CommandLineInterface
         song = get_user_input.titleize
         song_instance = Song.find_by(name: song)
         puts "Playing #{song_instance.name}"
-        puts "type 'menu' go back to main menu"
     end
 
     def view_all_artists
@@ -125,30 +121,72 @@ class CommandLineInterface
     def welcome 
         greet
         show_logo
-        display_menu
     end
+
+    # NEW ******************
+    def exit_program
+        puts "Goodbye!!!"
+    end
+     
+    # # NEW ******************
+    # def help
+    #     puts "I accept the following commands:"
+    #     puts "- Menu"
+    #     puts "- Help"
+    #     puts "- Search"
+    #     puts "- Exit"
+    # end
+
     
+    # def run
+    #     menu_array = ["To play a song by name","To view all artists", "To view all songs by artist", "To view all songs by album", "To view all artists by genre", "To see all songs" ]
+
+    #     choice = display_menu
+    #     if choice == menu_array[0]
+    #         play
+    #     elsif choice == menu_array[1]
+    #         view_all_artists  
+    #     elsif choice == menu_array[2]
+    #         view_artists_songs
+    #     elsif choice == menu_array[3]
+    #         view_album_songs
+    #     elsif choice == menu_array[4]
+    #         artist_by_genre
+    #     # elsif choice == 6
+    #     #     make_your_own_playlist
+    #     elsif choice == menu_array[5]
+    #         display_all_songs
+    #     end
+    
+    #     # prompt = TTY::Prompt.new
+    #     # prompt.select("Choose your destiny?", %w(Scorpion Kano Jax))
+    # end
     def run
-        choice = get_user_input.to_i
-        if choice == 1
-            play
-        elsif choice == 2
-            view_all_artists  
-        elsif choice == 3
-            view_artists_songs
-        elsif choice == 4
-            view_album_songs
-        elsif choice == 5
-            artist_by_genre
-        # elsif choice == 6
-        #     make_your_own_playlist
-        elsif choice == 7
-            display_all_songs
-        end
-    
-        # prompt = TTY::Prompt.new
-        # prompt.select("Choose your destiny?", %w(Scorpion Kano Jax))
+        menu_array = ["To play a song by name","To view all artists", "To view all songs by artist", "To view all songs by album", "To view all artists by genre", "To see all songs","To Exit" ]
+          
+            input = ""
+            while input
+              puts "Please choose a command:"
+              choice = display_menu
+              case choice
+              when menu_array[0]
+                play
+              when menu_array[1]
+              when menu_array[2]
+              when menu_array[3]
+              when menu_array[4]
+              when menu_array[5]
+              when menu_array[6] #EXIT
+                exit_program
+                break
+              else
+                display_menu
+              end
+            end
+
     end
+
+
 end
 
 
