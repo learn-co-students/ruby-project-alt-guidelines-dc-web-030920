@@ -53,6 +53,13 @@ class CommandLineInterface
       puts "Enter the song name:"
       song = get_user_input.titleize
       song_instance = Song.find_by(name: song)
+        while !song_instance do
+          puts "Invalid, try again:"
+          song = get_user_input.titleize
+          song_instance = Song.find_by(name: song)
+        end
+        return song_instance.name
+           
     end
 
     def play(song)# needs validation for when song does't exist in library
