@@ -26,28 +26,47 @@ class CommandLineInterface
         prompt = TTY::Prompt.new
         prompt.select(string,array)
     end
+
+    def get_user_input
+        gets.chomp
+    end
+
+    def welcome 
+        greet
+        show_logo
+    end
+
+    # NEW ******************
+    def exit_program
+        puts "Goodbye!!!"
+    end
+
     
     def display_menu
-        menu = ["To play a song by name","To view all artists", "To view all songs by artist", "To view all songs by album", "To view all artists by genre", "To see all songs","To Exit" ]
+        menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit" ]
         user_choice = prompt("Select a menu item please: ", menu)
         return user_choice
         binding.pry
         # puts "6. to make your own playlist"
     end
 
+    def search_song
+      puts "Enter the song name:"
+      song = get_user_input.titleize
+      song_instance = Song.find_by(name: song)
+    end
+
     def play # needs validation for when song does't exist in library
-        puts "Enter the song name: "
+        puts "Enter the song name:"
         song = get_user_input.titleize
         song_instance = Song.find_by(name: song)
         puts "Playing #{song_instance.name}"
     end
 
     def view_all_artists
-        puts "Artists: "
-        count = 1
-        Artist.all.each{|artist| ap "#{count}. #{artist.name}"
-        count += 1
-    }
+        list_of_artists = []
+        info_array = Artist.all.each{|artist|  list_of_artists << artist.name}.sort        
+       prompt("Artists: ", list_of_artists)
     end
  
 
@@ -114,19 +133,7 @@ class CommandLineInterface
 
     
 
-    def get_user_input
-        gets.chomp
-    end
-
-    def welcome 
-        greet
-        show_logo
-    end
-
-    # NEW ******************
-    def exit_program
-        puts "Goodbye!!!"
-    end
+  
      
     # # NEW ******************
     # def help
@@ -162,21 +169,23 @@ class CommandLineInterface
     #     # prompt.select("Choose your destiny?", %w(Scorpion Kano Jax))
     # end
     def run
-        menu_array = ["To play a song by name","To view all artists", "To view all songs by artist", "To view all songs by album", "To view all artists by genre", "To see all songs","To Exit" ]
+        menu_array = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit" ]
           
             input = ""
             while input
-              puts "Please choose a command:"
               choice = display_menu
               case choice
               when menu_array[0]
                 play
               when menu_array[1]
+                view_all_artists
               when menu_array[2]
+                view_album_songs
               when menu_array[3]
+                artist_by_genre
               when menu_array[4]
-              when menu_array[5]
-              when menu_array[6] #EXIT
+                display_all_songs
+              when menu_array[5] #EXIT
                 exit_program
                 break
               else
