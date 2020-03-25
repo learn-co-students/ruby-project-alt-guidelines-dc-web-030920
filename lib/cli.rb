@@ -129,7 +129,8 @@ class CommandLineInterface
     # end 
 
     def display_all_songs
-        Song.all.each{|song| puts "-#{song.name}"}
+      all_songs = Song.all.map{|song| song.name}.sort
+      song_name = prompt("Choose a song: ", all_songs)
     end
 
     
@@ -184,7 +185,7 @@ class CommandLineInterface
               when menu_array[3]
                 play(view_artist_songs(artist_by_genre))
               when menu_array[4]
-                display_all_songs
+                play(display_all_songs)
               when menu_array[5] #EXIT
                 exit_program
                 break
