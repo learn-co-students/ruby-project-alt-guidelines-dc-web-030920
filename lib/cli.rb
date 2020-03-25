@@ -109,19 +109,14 @@ class CommandLineInterface
         end
     end
 
-    def artist_by_genre(genre)
+    def artist_by_genre
         all_genres = Artist.all.map{|artist| artist.genre}.uniq.sort
         genre_name = prompt("Choose a genre: ", all_genres)
-        artists = Artist.all.where(genre: genre_name)
+        artists = Artist.all.where(genre: genre_name).map{|artist| artist.name}
         puts "**************************"
         puts "For #{genre_name}"
         puts "**************************"
-        count = 1
-        Artist.all.select{|artist| artist.genre == genre}
-        artists.each do |artist|
-            ap "#{count}. #{artist.name}" 
-            count += 1
-        end
+        prompt("Choose an Artist from #{genre_name}", artists)
     end
 
     # def make_your_own_playlist
@@ -187,7 +182,7 @@ class CommandLineInterface
               when menu_array[2]
                 play(view_album_songs(view_all_albums))
               when menu_array[3]
-                artist_by_genre
+                play(view_artist_songs(artist_by_genre))
               when menu_array[4]
                 display_all_songs
               when menu_array[5] #EXIT
