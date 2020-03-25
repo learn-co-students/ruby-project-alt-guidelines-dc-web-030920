@@ -46,7 +46,6 @@ class CommandLineInterface
         menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit" ]
         user_choice = prompt("Select a menu item please: ", menu)
         return user_choice
-        binding.pry
         # puts "6. to make your own playlist"
     end
 
@@ -56,11 +55,8 @@ class CommandLineInterface
       song_instance = Song.find_by(name: song)
     end
 
-    def play # needs validation for when song does't exist in library
-        puts "Enter the song name:"
-        song = get_user_input.titleize
-        song_instance = Song.find_by(name: song)
-        puts "Playing #{song_instance.name}"
+    def play(song)# needs validation for when song does't exist in library
+        puts "Playing #{song}"
     end
 
     def view_all_artists
@@ -70,18 +66,14 @@ class CommandLineInterface
     end
  
 
-    def view_artists_songs
-        artist_names = Artist.all.map{|artist| artist.name}
-        artist_name = prompt("Select an artist name", artist_names.sort)
+    def view_artist_songs(artist)
+        artist_name = artist
         artist_id = Artist.find_by(name: artist_name).id
-        songs = Song.where(artist_id: artist_id)
+        songs = Song.where(artist_id: artist_id).map{|song| song.name}
         count = 1
         puts "**************************"
-        puts "#{artist_name}'s songs"
         puts "**************************"
-         final_answer = songs.each{|song| ap "#{count}. #{song.name}"
-         count += 1
-        }
+        prompt("#{artist_name}'s songs", songs)
     end
 
 
@@ -144,7 +136,6 @@ class CommandLineInterface
     #     puts "- Exit"
     # end
 
-    
     # def run
     #     menu_array = ["To play a song by name","To view all artists", "To view all songs by artist", "To view all songs by album", "To view all artists by genre", "To see all songs" ]
 
@@ -176,9 +167,9 @@ class CommandLineInterface
               choice = display_menu
               case choice
               when menu_array[0]
-                play
+                play(search_song)
               when menu_array[1]
-                view_all_artists
+                play(view_artist_songs(view_all_artists))
               when menu_array[2]
                 view_album_songs
               when menu_array[3]
