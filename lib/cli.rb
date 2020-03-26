@@ -44,7 +44,7 @@ class CommandLineInterface
 
     
     def display_menu
-        menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album" ]
+        menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists" ]
         user_choice = prompt("Select a menu item please: ", menu)
         return user_choice
     end
@@ -151,7 +151,7 @@ class CommandLineInterface
 
     
     def run
-        menu_array = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album"]
+        menu_array = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists" ]
           
             input = ""
             while input

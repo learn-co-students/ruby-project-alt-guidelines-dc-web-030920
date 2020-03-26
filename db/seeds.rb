@@ -1,6 +1,10 @@
 Album.destroy_all
 Song.destroy_all
 Artist.destroy_all
+Playlist.destroy_all
+PlaylistSong.destroy_all
+
+
 
 album1 = Album.create(title: "Rhodeo", release_date: "03/20/13")
 album2 = Album.create(title: "21", release_date: "04/20/08")
@@ -18,6 +22,8 @@ artist5 = Artist.create(name: "Britney Spears", genre: "Pop")
 artist6 = Artist.create(name: "Andrea Bocelli", genre: "Opera")
 
 
+
+
 song1 = Song.create(name: "Goosebumps", artist_id: artist3.id, album_id: album1.id)
 song2 = Song.create(name: "Hello", artist_id: artist2.id, album_id: album2.id)
 song3 = Song.create(name: "Kobe", artist_id: artist1.id, album_id: album3.id)
@@ -27,4 +33,14 @@ song6 = Song.create(name: "Invitation", artist_id: artist5.id, album_id: album4.
 song7 = Song.create(name: "Make Me", artist_id: artist5.id, album_id: album4.id)
 song8 = Song.create(name: "Rolling In The Deep", artist_id: artist2.id, album_id: album2.id)
 song9 = Song.create(name: "Time To Say Goodbye", artist_id: artist6.id, album_id: album7.id)
+
+
+
+
+play1 = Playlist.create(name: "Best of Michael Jackson")
+play2 = Playlist.create(name: "Best of the 80's")
+
+ps = PlaylistSong.create(song_id: song5.id, playlist_id: play1.id)
+ps2 = PlaylistSong.create(song_id: song4.id, playlist_id: play1.id)
+ps3 = PlaylistSong.create(song_id: song5.id, playlist_id: play2.id )
 
