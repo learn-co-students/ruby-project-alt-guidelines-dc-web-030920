@@ -35,6 +35,7 @@ class CommandLineInterface
         greet
         show_logo
     end
+    
 
     # Exits program
     def exit_program
