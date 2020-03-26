@@ -148,6 +148,22 @@ class CommandLineInterface
       all_songs = Song.all.map{|song| song.name}.sort
       song_name = prompt("Choose a song: ", all_songs)
     end
+    # Returns all Playlists in database
+
+    def display_all_playlists
+      all_playlists = Playlist.all.map{|playlist| playlist.name}.sort
+      playlist_name = prompt("Choose a Playlist: ", all_playlists)
+    end
+
+    def view_playlist_songs(playlist)
+      playlist_title = playlist
+      playlist_id = Playlist.find_by(name: playlist_title).id
+      playlist_songs_ids = PlaylistSong.where(playlist_id: playlist_id).map{|playsong| playsong.song_id}
+      songs = playlist_songs_ids.map {|id| Song.find_by(id: id).name }
+      puts "**************************"
+      puts "**************************"
+      prompt("#{playlist_title}'s songs", songs)
+    end
 
     
     def run
@@ -172,6 +188,11 @@ class CommandLineInterface
                 break
               when menu_array[6]
                 play(view_album_songs(search_album))
+              when menu_array[7]
+                #create your playlist
+              when menu_array[8]
+                #view all playlists
+                play(view_playlist_songs(display_all_playlists))
               else
                 display_menu
               end
