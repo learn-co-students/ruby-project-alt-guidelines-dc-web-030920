@@ -13,6 +13,7 @@ album4 = Album.create(title: "Glory", release_date: "06/12/2016")
 album5 = Album.create(title: "Thriller", release_date: "03/23/1982")
 album6 = Album.create(title: "Bad", release_date: "11/23/1987")
 album7 = Album.create(title: "A Night Tuscany", release_date: "12/14/1997")
+album8 = Album.create(title: "Can't Slow Down", release_date: "04/12/1983")
 
 artist1 = Artist.create(name: "Lil Uzi", genre: "Rap")
 artist2 = Artist.create(name: "Adele", genre: "Pop")
@@ -20,6 +21,7 @@ artist3 = Artist.create(name: "Travis Scott", genre: "Rap")
 artist4 = Artist.create(name: "Michael Jackson", genre: "Pop")
 artist5 = Artist.create(name: "Britney Spears", genre: "Pop")
 artist6 = Artist.create(name: "Andrea Bocelli", genre: "Opera")
+artist7 = Artist.create(name: "Lionel Richie", genre: "Pop")
 
 
 
@@ -33,6 +35,7 @@ song6 = Song.create(name: "Invitation", artist_id: artist5.id, album_id: album4.
 song7 = Song.create(name: "Make Me", artist_id: artist5.id, album_id: album4.id)
 song8 = Song.create(name: "Rolling In The Deep", artist_id: artist2.id, album_id: album2.id)
 song9 = Song.create(name: "Time To Say Goodbye", artist_id: artist6.id, album_id: album7.id)
+song10 = Song.create(name: "Hello", artist_id: artist7.id, album_id: album8.id)
 
 
 
