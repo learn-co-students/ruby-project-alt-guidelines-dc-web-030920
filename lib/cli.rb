@@ -64,7 +64,7 @@ class CommandLineInterface
           song = get_user_input.titleize
           song_instance = Song.find_by(name: song)
         end
-        return song_instance.name
+        return song_instance
     end
 
 
@@ -89,7 +89,7 @@ class CommandLineInterface
     def play_by_artist(song)
         artist_id = song.artist_id
         artist = Artist.find_by(id: artist_id).name
-        puts "Playing #{song} by #{artist}"
+        puts "Playing #{song.name} by #{artist}"
     end
     # Returns a list of artists
     def view_all_artists
