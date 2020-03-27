@@ -49,8 +49,8 @@ class CommandLineInterface
 
     
     def display_menu
-        menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists", "Add to a Playlist", "Delete a Playlist" ]
-        user_choice = prompt("Select a menu item please: ", menu)
+      menu_array = ["Artists","Songs", "Albums", "Genre", "Playlists","Create a Playlist", "Add to a Playlist" , "Delete a Playlist","Search song", "Search album", "To Exit"]
+        user_choice = prompt("Select a menu item please: ", menu_array)
         return user_choice
     end
 
@@ -64,7 +64,7 @@ class CommandLineInterface
           song = get_user_input.titleize
           song_instance = Song.find_by(name: song)
         end
-        return song_instance
+        return song_instance.name
     end
 
 
@@ -83,19 +83,21 @@ class CommandLineInterface
 
     #plays a song , the argument is a string
     def play(song)
+        # artist = Artist.find_by(id: song.artist_id)
         puts "Playing #{song}"
     end
 
     def play_by_artist(song)
-        artist_id = song.artist_id
+        songg = Song.find_by(name: song)
+        artist_id = songg.artist_id
         artist = Artist.find_by(id: artist_id).name
-        puts "Playing #{song.name} by #{artist}"
+        puts "Playing #{song} - #{artist}"
     end
     # Returns a list of artists
     def view_all_artists
         list_of_artists = []
         info_array = Artist.all.each{|artist|  list_of_artists << artist.name}.sort        
-       prompt("Artists: ", list_of_artists)
+       prompt("Artists: ", list_of_artists.sort)
     end
  
     # Returns the songs of an Artist
@@ -112,7 +114,7 @@ class CommandLineInterface
     def view_all_albums
       list_of_albums = []
         info_array = Album.all.each{|album|  list_of_albums << album.title}.sort        
-       prompt("Albums: ", list_of_albums)
+       prompt("Albums: ", list_of_albums.sort)
     end
 
     # Returns a list of songs by Album
@@ -139,7 +141,11 @@ class CommandLineInterface
 
     # Returns all songs in database
     def display_all_songs
-      all_songs = Song.all.map{|song| song.name}.sort
+      all_songs = Song.all.map{|song|
+        artist = Artist.find_by(id: song.artist_id)
+       " #{song.name} - #{artist.name}"
+    
+    }.sort
 
       song_name = prompt("Choose a song: ", all_songs)
     end
@@ -200,49 +206,49 @@ class CommandLineInterface
 
     def delete_playlist
       find_playlist.destroy
+      puts "Playlist has been deleted"
     end
 
 
     
     def run
-        menu_array = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists", "Add to a Playlist", "Delete a Playlist"]
+        # menu_array = ["Artists","Songs", "Albums", "Genre", "Playlists","Create a Playlist", "Add to a Playlist" , "Delete a Playlist","Search song", "Search album", "To Exit"]
           
             input = ""
             while input
               choice = display_menu
-              case choice
-              when menu_array[0]
-                # Searches a song by name
-                # play(search_song)
-                play_by_artist(search_song)
-              when menu_array[1]
+              case choice    
+              when "Artists"
                 # Displays all artists, and shows all songs by artist
                 play(view_artist_songs(view_all_artists))
-              when menu_array[2]
+              when "Albums"
                 # Displays all albums and shows list of songs inside album
                 play(view_album_songs(view_all_albums))
-              when menu_array[3]
+              when "Genre"
                 # Displays all genres, shows list of artists, shows all the songs of the artist
                 play(view_artist_songs(artist_by_genre))
-              when menu_array[4]
+              when "Songs"
                 # Displays all songs in database 
-                # play(display_all_songs)
-                play_by_artist(song)
-              when menu_array[5] #EXIT
-                exit_program
-                break
-              when menu_array[6]
-                play(view_album_songs(search_album))
-              when menu_array[7]
-                #create your playlist
-                add_songs_to_playlist(create_playlist,select_songs_for_playlist)
-              when menu_array[8]
+                play(display_all_songs)
+                # play_by_artist(display_all_songs)
+              when "Playlists"
                 #view all playlists
                 play(view_playlist_songs(display_all_playlists))
-              when menu_array[9]
-                add_songs_to_playlist(find_playlist,select_songs_for_playlist)
-              when menu_array[10]
+              when "Create a Playlist"
+                #create your playlist
+                add_songs_to_playlist(create_playlist,select_songs_for_playlist)
+              when "Search song"
+                # Searches a song by name
+                play_by_artist(search_song)
+              when "Search album"
+                play(view_album_songs(search_album))
+              when  "Delete a Playlist" #delete playlist
                 delete_playlist
+              when "Add to a Playlist"
+                add_songs_to_playlist(find_playlist,select_songs_for_playlist) 
+              when "To Exit" #EXIT
+                exit_program
+                break
               else
                 display_menu
               end
