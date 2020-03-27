@@ -49,7 +49,7 @@ class CommandLineInterface
 
     
     def display_menu
-        menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists" ]
+        menu = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists", "Add to a Playlist", "Delete a Playlist" ]
         user_choice = prompt("Select a menu item please: ", menu)
         return user_choice
     end
@@ -125,22 +125,6 @@ class CommandLineInterface
       prompt("#{album_title}'s songs", songs)
     end
 
-    # Searches with an album's name and returns the songs for the album
-    # def search_for_album(album_name)
-    #     puts "Enter the album's title: "
-    #     album_title = get_user_input.titleize
-    #     album_id = Album.all.find_by(title: album_title).id
-    #     songs = Song.where(album_id: album_id)
-       
-    #     puts "**************************"
-    #     puts "#{album_title}"
-    #     puts "**************************"
-    #     count = 1
-    #     songs.each do |song|
-    #         ap "#{count}. #{song.name}" 
-    #         count += 1
-    #     end
-    # end
 
     # Returns a list of artists by the selected genre
     def artist_by_genre
@@ -170,18 +154,22 @@ class CommandLineInterface
       playlist_title = playlist
       playlist_id = Playlist.find_by(name: playlist_title).id
       playlist_songs_ids = PlaylistSong.where(playlist_id: playlist_id).map{|playsong| playsong.song_id}
-      # artist_ids = playlist_songs_ids.map{|id| Song.find_by(id: id).artist_id}
-      # artists_names = artist_ids.map{|idd| Artist.find_by(id: idd).name}
+
       songs = playlist_songs_ids.map{|song_id| "#{Song.find_by(id: song_id).name} - #{Artist.find_by(id: Song.find_by(id: song_id).artist_id).name}"}
       puts "**************************"
       puts "**************************"
-      prompt("#{playlist_title}'s songs", songs)
+      prompt("#{playlist_title}'s songs", songs.uniq)
     end
 
     def create_playlist
       puts "Enter your new playlist title: "
       title_of_playlist = gets.chomp
       Playlist.create(name: title_of_playlist)
+    end
+
+    def find_playlist
+      title = display_all_playlists
+      Playlist.find_by(name: title)
     end
     # Prompt and let user select songs to add to playlist. Returns array of strings (songs)
     
@@ -205,16 +193,19 @@ class CommandLineInterface
        PlaylistSong.create(playlist_id: playlist.id, song_id: song_instance.id)
       end
       puts "**************************"
-      puts "Created a playlist #{playlist.name}"
+      puts "Added #{songs_array.count} songs to playlist #{playlist.name}"
       puts "**************************"
 
-      
-      # PlaylistSong needs playlist_id, song_id,.
-
     end
+
+    def delete_playlist
+      find_playlist.destroy
+    end
+
+
     
     def run
-        menu_array = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists" ]
+        menu_array = ["Search song","Artists", "Albums", "Genre", "Songs","To Exit", "Search album", "Create a Playlist", "Playlists", "Add to a Playlist", "Delete a Playlist"]
           
             input = ""
             while input
@@ -248,6 +239,10 @@ class CommandLineInterface
               when menu_array[8]
                 #view all playlists
                 play(view_playlist_songs(display_all_playlists))
+              when menu_array[9]
+                add_songs_to_playlist(find_playlist,select_songs_for_playlist)
+              when menu_array[10]
+                delete_playlist
               else
                 display_menu
               end
