@@ -1,4 +1,4 @@
-Module One Final Project
+<!-- Module One Final Project
 ========================
 
 Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
@@ -94,7 +94,7 @@ Before you start building, take a look at the files you have available in this r
 
 **Note:** There is no `spec` directory. Your goal is to use [Behavior Driven Development (BDD)](https://en.wikipedia.org/wiki/Behavior-driven_development) to confirm that your code is doing what it should. This means instead of running `rspec` or `learn`, you should frequently be opening up the `rake console` and confirming that your methods and associations work.
 
----
+--- -->
 
 ### Phase 2: Scaffolding
 
